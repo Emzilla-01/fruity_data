@@ -10,6 +10,7 @@ There is some ambiguity in the problem statement, so some requirements have mult
 Updates can be made to improve optimization, readability, code organization per request. The idea is to present a fully featured first cut per the requirements.
 
 8-23-2021 : `how to write good code comments`??? 🤔🤔🤔
+9-20-2021 : reviewing this because I thirst for coding but didn't code today at work... Add TODO on sys.argv, 
 """
 
 import sys
@@ -23,7 +24,7 @@ class FruitBasket():
             s = s.replace(c, "")
         return(s)
 
-    def __init__(self, data_path=sys.argv[1]):
+    def __init__(self, data_path=sys.argv[1]): # mistake: sys.argv[1] should be called in main(), not in init. If we call multiple [FruitBasket() for fb in path_list], this would break. If this is imported into another script which takes its own sys.argv, this would break.
         self.fruitdict = dict()
         with open(os.path.abspath(sys.argv[1]), 'rt') as fruitdata:
             i=0
@@ -144,7 +145,7 @@ class FruitBasket():
                 )
             print("\nThe characteristics (size, color, shape, etc.) of each fruit by type (treating unique fruits as tuple of attrs):")
                         
-            [print(self.text_formatter(f"{itm[1]} {itm[0][0]}s : {itm[0][1]} ")) for itm in self.fruit_chars_counts_dict.items()]
+            [print(self.text_formatter(f"{itm[1]} {itm[0][0]}s : {itm[0][1]} ")) for itm in self.fruit_chars_counts_dict.items()] # TODO assign a name instead of writing out a long comprehension twice.
             return([self.text_formatter(f"{itm[1]} {itm[0][0]} : {itm[0][1]} ") for itm in self.fruit_chars_counts_dict.items()])
         else:
             try:
@@ -156,7 +157,7 @@ class FruitBasket():
             for fruit_type in self.fruit_types_set:
                 self.fruit_chars_counts_dict.setdefault(fruit_type[0],{'count':0, 'attrs':list()})
                 [self.fruit_chars_counts_dict[fruit_type[0]]['attrs'].append(attr) for attr in fruit_type[1]]
-                self.fruit_chars_counts_dict[fruit_type[0]]['attrs'] = sorted(list(set(self.fruit_chars_counts_dict[fruit_type[0]]['attrs'])))
+                self.fruit_chars_counts_dict[fruit_type[0]]['attrs'] = sorted(list(set(self.fruit_chars_counts_dict[fruit_type[0]]['attrs']))) # TODO: would self.dict_[k][a].sort() work?
                 self.fruit_chars_counts_dict[fruit_type[0]]['count'] = counts_dict[fruit_type[0]]
             
             print("\nThe characteristics (size, color, shape, etc.) of each fruit by type (flat/naive):")            
@@ -194,11 +195,11 @@ class FruitBasket():
         print(stale_items_str)
     
 ######################
-# 
+# main
 ######################
 
-def main():
-    basket = FruitBasket()
+def main(): #TODO - use sys.argv in main() instead of in FruitBasket.__init__...
+    basket = FruitBasket() 
     print(f"Total number of fruit: {basket.get_total_items_in_inventory()}\n")  
     basket.count_fruit()
     basket.get_fruit_characteristics(flat=False)
